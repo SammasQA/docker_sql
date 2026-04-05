@@ -12,12 +12,10 @@ public class LoginPage {
     private final SelenideElement loginButton = $("[data-test-id=action-login]");
     private final SelenideElement errorNotification = $("[data-test-id='error-notification']");
 
-
     private void fillLoginForm(String login, String password) {
         loginField.setValue(login);
         passwordField.setValue(password);
     }
-
 
     public VerificationPage validLogin(String login, String password) {
         fillLoginForm(login, password);
@@ -26,15 +24,9 @@ public class LoginPage {
         return new VerificationPage();
     }
 
-
     public void login(String login, String password) {
         fillLoginForm(login, password);
         loginButton.click();
-    }
-
-
-    public void checkErrorNotificationVisible() {
-        errorNotification.shouldBe(visible);
     }
 
 
@@ -43,7 +35,4 @@ public class LoginPage {
     }
 
 
-    public void errorNotificationShouldNotBeVisible() {
-        errorNotification.shouldNotBe(visible);
-    }
 }

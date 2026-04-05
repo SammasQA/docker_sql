@@ -11,11 +11,19 @@ repositories {
 
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
-    testImplementation 'com.codeborne:selenide:6.19.1'          // Java 11 compatible
+    testImplementation 'com.codeborne:selenide:6.19.1'
     testImplementation 'mysql:mysql-connector-java:8.0.33'
     testImplementation 'commons-dbutils:commons-dbutils:1.7'
-    testImplementation 'org.slf4j:slf4j-simple:2.0.9'          // для логов Selenide
-    // Не нужен selenium-devtools-v146, Selenide 6.19.1 сам подхватит нужный драйвер
+    testImplementation 'org.slf4j:slf4j-simple:2.0.9'
+
+
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    testCompileOnly 'org.projectlombok:lombok:1.18.30'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+
+    testImplementation 'net.datafaker:datafaker:1.9.0'
 }
 
 test {

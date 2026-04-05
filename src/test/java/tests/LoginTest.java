@@ -7,7 +7,6 @@ import pages.LoginPage;
 import utils.AppStarter;
 import utils.DbUtils;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.Assertions;
 
 import static com.codeborne.selenide.Selenide.open;
 
@@ -19,7 +18,7 @@ public class LoginTest {
         DbUtils.cleanAllTables();
         AppStarter.start();
         Configuration.baseUrl = "http://localhost:9999";
-        Configuration.timeout = 10000;
+       ;
     }
 
     @AfterEach
@@ -62,6 +61,7 @@ public class LoginTest {
         loginPage.login(user.getLogin(), user.getPassword());
 
         DashboardPage dashboardPage = new DashboardPage();
-        Assertions.assertFalse(dashboardPage.isVisible(), "Дашборд не должен отображаться после блокировки");
+
+        dashboardPage.shouldNotBeVisible();
     }
 }

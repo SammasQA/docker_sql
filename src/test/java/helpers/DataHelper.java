@@ -1,38 +1,31 @@
 package helpers;
 
-import utils.DbUtils;
+import lombok.Value;
+import net.datafaker.Faker;
 
 public class DataHelper {
 
+    private static final Faker faker = new Faker();
+
     private DataHelper() {}
 
+    @Value
     public static class AuthInfo {
-        private final String login;
-        private final String password;
-
-        public AuthInfo(String login, String password) {
-            this.login = login;
-            this.password = password;
-        }
-
-        public String getLogin() {
-            return login;
-        }
-
-        public String getPassword() {
-            return password;
-        }
+        String login;
+        String password;
     }
+
 
     public static AuthInfo getValidUser() {
         return new AuthInfo("vasya", "password");
     }
 
+    // Генерируем случайный неверный пароль
     public static String getInvalidPassword() {
-        return "wrong_password";
+        return faker.internet().password(8, 12) + "_invalid";
     }
 
     public static String getVerificationCodeFor(String login) {
-        return DbUtils.getVerificationCodeForUser(login);
+        return utils.DbUtils.getVerificationCodeForUser(login);
     }
 }

@@ -23,15 +23,15 @@ public class AppStarter {
 
             ProcessBuilder pb = new ProcessBuilder(
                     "java", "-jar", jarPath,
+                    "-P:profile=test",
                     "-P:jdbc.url=jdbc:mysql://localhost:3306/app",
                     "-P:jdbc.user=app",
                     "-P:jdbc.password=pass"
             );
             pb.directory(new File("."));
-            pb.redirectErrorStream(true); // объединяем stdout и stderr, чтобы видеть логи SUT
-            pb.inheritIO();               // выводим всё в консоль Gradle
+            pb.redirectErrorStream(true);
+            pb.inheritIO();
             process = pb.start();
-
 
             Thread.sleep(15000);
         } catch (Exception e) {
