@@ -16,11 +16,10 @@ public class LoginTest {
 
     @BeforeAll
     void prepare() {
-        Configuration.timeout = 10000;
-        Configuration.baseUrl = "http://localhost:9999";
-
         DbUtils.cleanAllTables();
         AppStarter.start();
+        Configuration.baseUrl = "http://localhost:9999";
+        Configuration.timeout = 10000;
     }
 
     @AfterEach
@@ -57,7 +56,7 @@ public class LoginTest {
 
         for (int i = 0; i < 3; i++) {
             loginPage.login(user.getLogin(), invalidPassword);
-            loginPage.checkErrorNotificationVisible();
+            loginPage.checkErrorNotificationText("Ошибка! Неверно указан логин или пароль");
         }
 
         loginPage.login(user.getLogin(), user.getPassword());

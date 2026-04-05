@@ -18,27 +18,32 @@ public class LoginPage {
         passwordField.setValue(password);
     }
 
+
     public VerificationPage validLogin(String login, String password) {
         fillLoginForm(login, password);
         loginButton.click();
-        errorNotification.shouldNotBe(visible); // если ошибка – тест упадёт с понятным сообщением
+        errorNotification.shouldNotBe(visible);
         return new VerificationPage();
     }
+
 
     public void login(String login, String password) {
         fillLoginForm(login, password);
         loginButton.click();
     }
 
+
     public void checkErrorNotificationVisible() {
         errorNotification.shouldBe(visible);
     }
+
 
     public void checkErrorNotificationText(String expectedText) {
         errorNotification.shouldBe(visible).shouldHave(text(expectedText));
     }
 
-    public boolean isErrorNotificationVisible() {
-        return errorNotification.isDisplayed();
+
+    public void errorNotificationShouldNotBeVisible() {
+        errorNotification.shouldNotBe(visible);
     }
 }
