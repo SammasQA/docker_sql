@@ -2,40 +2,36 @@ package tests;
 
 import com.codeborne.selenide.Configuration;
 import helpers.DataHelper;
+import pages.DashboardPage;
 import pages.LoginPage;
 import utils.AppStarter;
 import utils.DbUtils;
 import org.junit.jupiter.api.*;
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
+import org.junit.jupiter.api.Assertions;
+
 import static com.codeborne.selenide.Selenide.open;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class LoginTest {
 
     @BeforeAll
-    void startApp() {
-
-        DbUtils.cleanDatabaseForSut();
-
-
-        AppStarter.start();
-
-
-        Configuration.browser = "chrome";
-        Configuration.holdBrowserOpen = false;
+    void prepare() {
+        Configuration.timeout = 10000;
         Configuration.baseUrl = "http://localhost:9999";
+
+        DbUtils.cleanAllTables();
+        AppStarter.start();
     }
 
-    @BeforeEach
-    void cleanData() {
-
-        DbUtils.cleanDataForTests();
+    @AfterEach
+    void cleanUpAfterTest() {
+        DbUtils.cleanTempTables();
     }
 
     @AfterAll
-    void stopApp() {
+    void stopAndClean() {
         AppStarter.stop();
+        DbUtils.cleanAllTables();
     }
 
     @Test
@@ -45,12 +41,11 @@ public class LoginTest {
         var user = DataHelper.getValidUser();
 
         var verificationPage = loginPage.validLogin(user.getLogin(), user.getPassword());
-
         String code = DataHelper.getVerificationCodeFor(user.getLogin());
         verificationPage.verify(code);
 
-
-        $("[data-test-id='dashboard']").shouldBe(visible);
+        DashboardPage dashboardPage = new DashboardPage();
+        dashboardPage.shouldBeVisible();
     }
 
     @Test
@@ -58,19 +53,16 @@ public class LoginTest {
         open("/");
         LoginPage loginPage = new LoginPage();
         var user = DataHelper.getValidUser();
-
+        String invalidPassword = DataHelper.getInvalidPassword();
 
         for (int i = 0; i < 3; i++) {
-            loginPage.login(user.getLogin(), "wrong_password");
-            $("[data-test-id='error-notification']").shouldBe(visible);
+            loginPage.login(user.getLogin(), invalidPassword);
+            loginPage.checkErrorNotificationVisible();
         }
-
 
         loginPage.login(user.getLogin(), user.getPassword());
 
-        // Проверяем, что остались на странице входа (дашборд не появился)
-        $("[data-test-id='dashboard']").shouldNotBe(visible);
-        // И появилось сообщение об ошибке (блокировка)
-        $("[data-test-id='error-notification']").shouldBe(visible);
+        DashboardPage dashboardPage = new DashboardPage();
+        Assertions.assertFalse(dashboardPage.isVisible(), "Дашборд не должен отображаться после блокировки");
     }
 }

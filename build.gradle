@@ -2,29 +2,23 @@ plugins {
     id 'java'
 }
 
-group = 'ru.netology'
-version = '1.0-SNAPSHOT'
+group 'ru.netology'
+version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testImplementation 'com.codeborne:selenide:6.12.4'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
-    testImplementation 'commons-dbutils:commons-dbutils:1.7'
+    testImplementation 'com.codeborne:selenide:6.19.1'          // Java 11 compatible
     testImplementation 'mysql:mysql-connector-java:8.0.33'
-    testImplementation 'com.github.javafaker:javafaker:1.0.2'
-    testImplementation 'io.github.bonigarcia:webdrivermanager:5.9.2'
-
-
-    compileOnly 'org.projectlombok:lombok:1.18.26'
-    annotationProcessor 'org.projectlombok:lombok:1.18.26'
-    testCompileOnly 'org.projectlombok:lombok:1.18.26'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
+    testImplementation 'commons-dbutils:commons-dbutils:1.7'
+    testImplementation 'org.slf4j:slf4j-simple:2.0.9'          // для логов Selenide
+    // Не нужен selenium-devtools-v146, Selenide 6.19.1 сам подхватит нужный драйвер
 }
 
 test {
     useJUnitPlatform()
-    systemProperty 'selenide.headless', System.getProperty('selenide.headless', 'false')
+    systemProperty 'selenide.headless', System.getProperty('selenide.headless')
 }
