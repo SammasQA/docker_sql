@@ -13,12 +13,18 @@ import static com.codeborne.selenide.Selenide.open;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class LoginTest {
 
+    private DataHelper.AuthInfo testUser;
+
     @BeforeAll
     void prepare() {
         DbUtils.cleanAllTables();
         AppStarter.start();
         Configuration.baseUrl = "http://localhost:9999";
-       ;
+    }
+
+    @BeforeEach
+    void createUser() {
+        testUser = DataHelper.generateRandomUser();
     }
 
     @AfterEach
@@ -36,10 +42,8 @@ public class LoginTest {
     void shouldLoginSuccessfully() {
         open("/");
         LoginPage loginPage = new LoginPage();
-        var user = DataHelper.getValidUser();
-
-        var verificationPage = loginPage.validLogin(user.getLogin(), user.getPassword());
-        String code = DataHelper.getVerificationCodeFor(user.getLogin());
+        var verificationPage = loginPage.validLogin(testUser.getLogin(), testUser.getPassword());
+        String code = DataHelper.getVerificationCodeFor(testUser.getLogin());
         verificationPage.verify(code);
 
         DashboardPage dashboardPage = new DashboardPage();
@@ -50,18 +54,16 @@ public class LoginTest {
     void shouldBlockAfterThreeInvalidPasswordAttempts() {
         open("/");
         LoginPage loginPage = new LoginPage();
-        var user = DataHelper.getValidUser();
         String invalidPassword = DataHelper.getInvalidPassword();
 
         for (int i = 0; i < 3; i++) {
-            loginPage.login(user.getLogin(), invalidPassword);
+            loginPage.login(testUser.getLogin(), invalidPassword);
             loginPage.checkErrorNotificationText("Ошибка! Неверно указан логин или пароль");
         }
 
-        loginPage.login(user.getLogin(), user.getPassword());
+        loginPage.login(testUser.getLogin(), testUser.getPassword());
 
         DashboardPage dashboardPage = new DashboardPage();
-
         dashboardPage.shouldNotBeVisible();
     }
 }

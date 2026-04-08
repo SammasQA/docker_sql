@@ -9,12 +9,26 @@ repositories {
     mavenCentral()
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+
+
     testImplementation 'com.codeborne:selenide:6.19.1'
+
+
     testImplementation 'mysql:mysql-connector-java:8.0.33'
-    testImplementation 'commons-dbutils:commons-dbutils:1.7'
-    testImplementation 'org.slf4j:slf4j-simple:2.0.9'
+
+
+    testImplementation 'commons-dbutils:commons-dbutils:1.8.1'
+
+
+    testImplementation 'org.slf4j:slf4j-simple:1.7.36'
 
 
     compileOnly 'org.projectlombok:lombok:1.18.30'
@@ -24,9 +38,13 @@ dependencies {
 
 
     testImplementation 'net.datafaker:datafaker:1.9.0'
+
+
+    testImplementation 'org.mindrot:jbcrypt:0.4'
 }
 
 test {
     useJUnitPlatform()
-    systemProperty 'selenide.headless', System.getProperty('selenide.headless')
+    systemProperty 'selenide.headless', System.getProperty('selenide.headless', 'false')
+    systemProperty 'file.encoding', 'UTF-8'
 }

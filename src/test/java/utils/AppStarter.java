@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 public class AppStarter {
-
     private static Process process;
 
     public static void start() {
@@ -13,14 +12,11 @@ public class AppStarter {
                 process.destroyForcibly();
                 process.waitFor(5, TimeUnit.SECONDS);
             }
-
             String jarPath = "artifacts/app-deadline.jar";
             File jarFile = new File(jarPath);
             if (!jarFile.exists()) {
-                throw new RuntimeException("JAR not found at: " + jarFile.getAbsolutePath() +
-                        "\nMake sure artifacts/app-deadline.jar exists in project root.");
+                throw new RuntimeException("JAR not found at: " + jarFile.getAbsolutePath());
             }
-
             ProcessBuilder pb = new ProcessBuilder(
                     "java", "-jar", jarPath,
                     "-P:profile=test",
@@ -32,8 +28,7 @@ public class AppStarter {
             pb.redirectErrorStream(true);
             pb.inheritIO();
             process = pb.start();
-
-            Thread.sleep(15000);
+            Thread.sleep(15000); // ожидание запуска
         } catch (Exception e) {
             throw new RuntimeException("Failed to start application", e);
         }

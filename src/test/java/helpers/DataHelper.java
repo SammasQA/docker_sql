@@ -2,9 +2,10 @@ package helpers;
 
 import lombok.Value;
 import net.datafaker.Faker;
+import org.mindrot.jbcrypt.BCrypt;
+import utils.DbUtils;
 
 public class DataHelper {
-
     private static final Faker faker = new Faker();
 
     private DataHelper() {}
@@ -16,16 +17,21 @@ public class DataHelper {
     }
 
 
-    public static AuthInfo getValidUser() {
-        return new AuthInfo("vasya", "password");
+    public static AuthInfo generateRandomUser() {
+        String login = faker.name().username();
+        String rawPassword = faker.internet().password(6, 10);
+        String hashedPassword = BCrypt.hashpw(rawPassword, BCrypt.gensalt());
+        DbUtils.insertUser(login, hashedPassword);
+        return new AuthInfo(login, rawPassword);
     }
 
-    // Генерируем случайный неверный пароль
+
     public static String getInvalidPassword() {
         return faker.internet().password(8, 12) + "_invalid";
     }
 
+
     public static String getVerificationCodeFor(String login) {
-        return utils.DbUtils.getVerificationCodeForUser(login);
+        return DbUtils.getVerificationCodeForUser(login);
     }
 }
