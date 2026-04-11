@@ -4,6 +4,7 @@ import com.codeborne.selenide.SelenideElement;
 import java.time.Duration;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
+import org.openqa.selenium.Keys;
 
 public class LoginPage {
     private final SelenideElement loginField = $("[data-test-id=login] input");
@@ -11,9 +12,15 @@ public class LoginPage {
     private final SelenideElement loginButton = $("[data-test-id=action-login]");
     private final SelenideElement errorNotification = $("[data-test-id='error-notification']");
 
+    private void clearAndSet(SelenideElement field, String value) {
+        field.click();
+        field.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
+        field.setValue(value);
+    }
+
     private void fillLoginForm(String login, String password) {
-        loginField.setValue(login);
-        passwordField.setValue(password);
+        clearAndSet(loginField, login);
+        clearAndSet(passwordField, password);
     }
 
 
