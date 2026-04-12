@@ -23,7 +23,6 @@ public class LoginPage {
         clearAndSet(passwordField, password);
     }
 
-
     public VerificationPage validLogin(String login, String password) {
         fillLoginForm(login, password);
         loginButton.click();
@@ -31,15 +30,19 @@ public class LoginPage {
         return new VerificationPage();
     }
 
-
     public void login(String login, String password) {
         fillLoginForm(login, password);
         loginButton.click();
     }
 
-
     public void checkErrorNotificationText(String expectedText) {
         errorNotification.shouldBe(visible, Duration.ofSeconds(10))
                 .shouldHave(text(expectedText));
     }
+
+
+    public void shouldBeVisible() {
+        loginField.shouldBe(visible, Duration.ofSeconds(10));
+    }
+
 }

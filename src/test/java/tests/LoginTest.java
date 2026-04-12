@@ -1,9 +1,11 @@
 package tests;
 
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.Selenide;
 import helpers.DataHelper;
 import pages.DashboardPage;
 import pages.LoginPage;
+import pages.VerificationPage;
 import utils.AppStarter;
 import utils.DbUtils;
 import org.junit.jupiter.api.*;
@@ -56,14 +58,26 @@ public class LoginTest {
         LoginPage loginPage = new LoginPage();
         String invalidPassword = DataHelper.getInvalidPassword();
 
+
         for (int i = 0; i < 3; i++) {
             loginPage.login(testUser.getLogin(), invalidPassword);
             loginPage.checkErrorNotificationText("Ошибка! Неверно указан логин или пароль");
         }
 
+
         loginPage.login(testUser.getLogin(), testUser.getPassword());
 
-        DashboardPage dashboardPage = new DashboardPage();
-        dashboardPage.shouldNotBeVisible();
+
+        Selenide.sleep(500);
+
+
+        loginPage.shouldBeVisible();
+
+
+        loginPage.checkErrorNotificationText("Ошибка! Пользователь заблокирован");
+
+
+        VerificationPage verificationPage = new VerificationPage();
+        verificationPage.shouldNotBeVisible();
     }
 }

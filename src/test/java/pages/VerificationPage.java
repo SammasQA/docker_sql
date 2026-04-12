@@ -13,4 +13,10 @@ public class VerificationPage {
         codeField.shouldBe(visible, Duration.ofSeconds(15)).setValue(code);
         verifyButton.click();
     }
+
+
+    public void shouldNotBeVisible() {
+        codeField.shouldNotBe(visible);
+    }
+
 }

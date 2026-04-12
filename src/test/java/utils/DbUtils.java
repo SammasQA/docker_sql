@@ -56,4 +56,15 @@ public class DbUtils {
             throw new RuntimeException(e);
         }
     }
+
+
+    public static String getUserStatus(String login) {
+        String sql = "SELECT status FROM users WHERE login = ?";
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
+            return runner.query(conn, sql, new ScalarHandler<>(), login);
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to get status for user: " + login, e);
+        }
+    }
+
 }
