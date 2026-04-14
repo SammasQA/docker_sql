@@ -14,9 +14,7 @@ public class VerificationPage {
         verifyButton.click();
     }
 
-
     public void shouldNotBeVisible() {
         codeField.shouldNotBe(visible);
     }
-
 }

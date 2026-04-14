@@ -16,7 +16,6 @@ public class DataHelper {
         String password;
     }
 
-
     public static AuthInfo generateRandomUser() {
         String login = faker.name().username();
         String rawPassword = faker.internet().password(6, 10);
@@ -25,11 +24,9 @@ public class DataHelper {
         return new AuthInfo(login, rawPassword);
     }
 
-
     public static String getInvalidPassword() {
         return faker.internet().password(8, 12) + "_invalid";
     }
-
 
     public static String getVerificationCodeFor(String login) {
         return DbUtils.getVerificationCodeForUser(login);

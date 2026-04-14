@@ -28,7 +28,7 @@ public class AppStarter {
             pb.redirectErrorStream(true);
             pb.inheritIO();
             process = pb.start();
-            Thread.sleep(15000); // ожидание запуска
+            Thread.sleep(15000);
         } catch (Exception e) {
             throw new RuntimeException("Failed to start application", e);
         }

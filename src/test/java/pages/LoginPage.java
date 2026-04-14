@@ -40,9 +40,7 @@ public class LoginPage {
                 .shouldHave(text(expectedText));
     }
 
-
     public void shouldBeVisible() {
         loginField.shouldBe(visible, Duration.ofSeconds(10));
     }
-
 }
