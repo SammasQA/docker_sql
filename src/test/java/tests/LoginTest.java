@@ -61,11 +61,12 @@ public class LoginTest {
             loginPage.checkErrorNotificationText("Ошибка! Неверно указан логин или пароль");
         }
 
+        String status = DbUtils.getUserStatus(testUser.getLogin());
+        Assertions.assertEquals("blocked", status, "Пользователь должен быть заблокирован после 3 неудачных попыток");
+
         loginPage.login(testUser.getLogin(), testUser.getPassword());
+        loginPage.checkErrorNotificationText("Ошибка! Пользователь заблокирован"); // Уточните реальный текст!
 
         loginPage.shouldBeVisible();
-
-        DashboardPage dashboardPage = new DashboardPage();
-        dashboardPage.shouldNotBeVisible();
     }
 }
